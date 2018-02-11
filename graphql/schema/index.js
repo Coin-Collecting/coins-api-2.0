@@ -11,6 +11,8 @@ import { me } from '../queries/me';
 import {
   registerUser,
   loginUser,
+  addUserCoin,
+  removeUserCoin,
 } from '../mutations/user';
 
 // QUERIES
@@ -31,6 +33,8 @@ const MutationType = new GraphQLObjectType({
   fields: () => ({
     registerUser,
     loginUser,
+    addUserCoin,
+    removeUserCoin,
   }),
 });
 

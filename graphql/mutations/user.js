@@ -2,7 +2,7 @@
 import { GraphQLString, GraphQLNonNull } from 'graphql';
 const { UserError } = require('graphql-errors');
 import { UserType } from '../types/user';
-import { User } from '../models/index';
+import { User, UserCoin } from '../models/index';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
@@ -36,7 +36,6 @@ export const registerUser = {
   }
 };
 
-
 export const loginUser = {
   type: GraphQLString,
   description: 'Login a User',
@@ -64,3 +63,42 @@ export const loginUser = {
     }, context.SECRET, {expiresIn: '1y',});
   }
 };
+
+export const addUserCoin = {
+  type: GraphQLString,
+  description: 'Add a coin to collection',
+  args: {
+    coinId: { type: new GraphQLNonNull(GraphQLString) },
+    quality: { type: new GraphQLNonNull(GraphQLString) },
+  },
+  resolve: async (value, { coinId, quality}, context) => {
+    if (!coinId) throw new UserError('Must provide a Coin ID');
+    if (!quality) throw new UserError('Must provide a quality');
+    UserCoin.create({
+      coinId,
+      quality,
+      userId: context.user.id,
+      issueId: '1',
+    });
+    return "Coin Added"
+  }
+}
+
+export const removeUserCoin = {
+  type: GraphQLString,
+  description: 'Remove a coin from collection',
+  args: {
+    id: { type: new GraphQLNonNull(GraphQLString) },
+  },
+  resolve: async (value, { id }, context) => {
+    if (!id) throw new UserError('Must provide an ID');
+
+    UserCoin.destroy({
+      where: {
+        id,
+      }
+    });
+
+    return "Coin Removed"
+  }
+}
