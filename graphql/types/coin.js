@@ -28,6 +28,11 @@ export const CoinType = new GraphQLObjectType({
       description: '...',
       resolve: obj => obj.mint,
     },
+    year: {
+      type: GraphQLString,
+      description: '...',
+      resolve: obj => obj.year,
+    },
     mintage: {
       type: GraphQLFloat,
       description: '...',

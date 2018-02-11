@@ -5,6 +5,7 @@ import {
 } from 'graphql';
 
 import { coins } from '../queries/coins';
+import { collection } from '../queries/collection';
 import { me } from '../queries/me';
 
 import {
@@ -19,6 +20,7 @@ const QueryType = new GraphQLObjectType({
   fields: () => ({
     coins,
     me,
+    collection,
   }),
 });
 

@@ -36,7 +36,7 @@ export const coins = {
   },
   resolve: async (root, { count, cursor = 0, offset = 0, order, issueId }) => {
     if (!count) count = 20;
-    console.log('BANG', count);
+
     let orderCol, orderDirection;
 
     if (typeof order === 'string') {

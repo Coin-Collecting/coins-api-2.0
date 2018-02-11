@@ -4,7 +4,6 @@ import {
   GraphQLString,
 } from 'graphql';
 
-
 import { DenominationType } from '../types/denomination';
 import { Issue, Denomination } from '../models';
 

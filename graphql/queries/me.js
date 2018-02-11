@@ -2,7 +2,7 @@
 import { UserType } from "../types/user";
 
 // Queries
-import { User, UserCoin } from "../models";
+import { User } from "../models";
 
 export const me = {
   type: UserType,
@@ -11,10 +11,14 @@ export const me = {
       let userData = await User.findById(context.user.id);
 
       let { username, email, admin } = userData.dataValues;
+
+      let collection = [{}];
+
       return {
         username,
         email,
         admin,
+        collection,
       }
     } else {
       return null;

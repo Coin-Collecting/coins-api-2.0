@@ -22,6 +22,11 @@ export const UserCoinType = new GraphQLObjectType({
       description: 'Quality of a coin',
       resolve: obj => obj.quality,
     },
+    issueId: {
+      type: GraphQLString,
+      description: 'Issue of a coin',
+      resolve: obj => obj.issueId,
+    },
     coin: {
       type: CoinType,
       description: 'Coin ID',

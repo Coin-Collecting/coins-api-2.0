@@ -73,6 +73,7 @@ const UserCoin = connection.define("usercoins", {
   },
   coinId: Sequelize.STRING,
   userId: Sequelize.STRING,
+  issueId: Sequelize.STRING,
   quality: Sequelize.STRING,
 }, {
   timestamps: false
