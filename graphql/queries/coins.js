@@ -6,9 +6,7 @@ import {
 } from 'graphql';
 
 // TYPES
-import {
-  CoinType,
-} from "../types";
+import { CoinType } from "../types/coin";
 
 // Queries
 import { Coin } from "../models";

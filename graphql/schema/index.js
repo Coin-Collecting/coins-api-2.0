@@ -5,6 +5,12 @@ import {
 } from 'graphql';
 
 import { coins } from '../queries/coins';
+import { me } from '../queries/me';
+
+import {
+  registerUser,
+  loginUser,
+} from '../mutations/user';
 
 // QUERIES
 const QueryType = new GraphQLObjectType({
@@ -12,9 +18,21 @@ const QueryType = new GraphQLObjectType({
   description: '...',
   fields: () => ({
     coins,
+    me,
+  }),
+});
+
+// MUTATIONS
+const MutationType = new GraphQLObjectType({
+  name: 'Mutations',
+  description: 'These are the things we can change',
+  fields: () => ({
+    registerUser,
+    loginUser,
   }),
 });
 
 export default new GraphQLSchema({
   query: QueryType,
+  mutation: MutationType,
 });

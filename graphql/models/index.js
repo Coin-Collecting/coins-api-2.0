@@ -9,6 +9,22 @@ const connection = new Sequelize(
   name, user, pass, {host, port }
 );
 
+const User = connection.define("user", {
+  username: {
+    type: Sequelize.STRING,
+    unique: true,
+  },
+  email: {
+    type: Sequelize.STRING,
+    unique: true,
+  },
+  admin: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+  },
+  password: Sequelize.STRING,
+});
+
 const Coin = connection.define("coin", {
   id: {
     type: Sequelize.STRING,
@@ -50,8 +66,22 @@ const Denomination = connection.define("denomination", {
   timestamps: false
 });
 
+const UserCoin = connection.define("usercoins", {
+  id: {
+    type: Sequelize.STRING,
+    primaryKey: true,
+  },
+  coinId: Sequelize.STRING,
+  userId: Sequelize.STRING,
+  quality: Sequelize.STRING,
+}, {
+  timestamps: false
+});
+
 export {
   Coin,
   Issue,
   Denomination,
+  UserCoin,
+  User,
 }
