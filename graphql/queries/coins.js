@@ -50,16 +50,16 @@ export const coins = {
       cursor = convertCursorToNodeId(cursor)
     }
 
-    let issues = issueId.split('+');
+    let issues = issueId ? issueId.split('+') : [];
 
     let coins = await Coin.findAndCountAll({
       limit: count + 1,
       offset,
       where: {
         id: { $gt: cursor },
-        issueId: {
+        ...issues.length > 0 ? {issueId: {
           $or: issues
-        }
+        }} : null,
       },
       order: orderCol && orderDirection ?
         [[orderCol, orderDirection]] : undefined,
@@ -67,9 +67,9 @@ export const coins = {
 
     let totalCount = await Coin.count({
       where: {
-        issueId: {
+        ...issues.length > 0 ? {issueId: {
           $or: issues
-        }
+        }} : null,
       }
     });
 
