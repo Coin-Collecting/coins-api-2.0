@@ -3,10 +3,12 @@ import {
   GraphQLObjectType,
   GraphQLString,
   GraphQLFloat,
+  GraphQLList,
 } from 'graphql';
 
 import { IssueType } from '../types/issue';
-import { Issue } from '../models';
+import { UserCoinType } from '../types/usercoin';
+import { Issue, UserCoin } from '../models';
 
 // COIN TYPE
 export const CoinType = new GraphQLObjectType({
@@ -21,7 +23,7 @@ export const CoinType = new GraphQLObjectType({
     issue: {
       type: IssueType,
       description: '...',
-      resolve: obj => Issue.findById(obj.issueId).then( res => res.dataValues),
+      resolve: obj => Issue.findById(obj.issueId).then(res => res.dataValues),
     },
     mint: {
       type: GraphQLString,
@@ -42,6 +44,21 @@ export const CoinType = new GraphQLObjectType({
       type: GraphQLString,
       description: '...',
       resolve: obj => obj.description,
-    }
-  }),
+    },
+    owned: {
+      type: new GraphQLList(UserCoinType),
+      description: '...',
+      resolve: async (obj, args, {user}) => {
+        let coins = await UserCoin.findAndCountAll({
+          where: {
+            coinId: obj.id,
+            userId: user.id,
+          }
+        });
+
+        console.log({coins});
+        return coins.rows;
+      }
+    },
+  })
 });
