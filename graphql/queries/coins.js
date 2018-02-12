@@ -5,6 +5,8 @@ import {
   GraphQLString,
 } from 'graphql';
 
+const Sequelize = require('sequelize');
+
 // TYPES
 import { CoinType } from "../types/coin";
 
@@ -48,12 +50,16 @@ export const coins = {
       cursor = convertCursorToNodeId(cursor)
     }
 
+    let issues = issueId.split('+');
+
     let coins = await Coin.findAndCountAll({
       limit: count + 1,
       offset,
       where: {
         id: { $gt: cursor },
-        ...issueId ? {issueId} : null
+        issueId: {
+          $or: issues
+        }
       },
       order: orderCol && orderDirection ?
         [[orderCol, orderDirection]] : undefined,
@@ -61,7 +67,9 @@ export const coins = {
 
     let totalCount = await Coin.count({
       where: {
-        ...issueId ? {issueId} : null
+        issueId: {
+          $or: issues
+        }
       }
     });
 
