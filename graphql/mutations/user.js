@@ -2,7 +2,7 @@
 import { GraphQLString, GraphQLNonNull } from 'graphql';
 const { UserError } = require('graphql-errors');
 import { UserType } from '../types/user';
-import { User, UserCoin } from '../models/index';
+import { User, UserCoin, Coin } from '../models/index';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
@@ -74,12 +74,16 @@ export const addUserCoin = {
   resolve: async (value, { coinId, quality}, context) => {
     if (!coinId) throw new UserError('Must provide a Coin ID');
     if (!quality) throw new UserError('Must provide a quality');
+    let issueId = await Coin.findById(coinId)
+      .then(res => res.dataValues.issueId);
+
     UserCoin.create({
       coinId,
       quality,
       userId: context.user.id,
-      issueId: '1',
+      issueId,
     });
+
     return "Coin Added"
   }
 }
