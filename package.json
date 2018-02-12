@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest",
     "graphql": "NODE_ENV=development nodemon --exec babel-node --presets es2015,stage-0 -- graphql/index.js",
+    "graphql-prod": "NODE_ENV=production nodemon --exec babel-node --presets es2015,stage-0 -- graphql/index.js",
     "lint": "eslint --ext .js,.jsx config src"
   },
   "author": "Stephen Young <stephen@mycoin.store>",
