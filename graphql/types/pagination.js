@@ -34,6 +34,7 @@ export function Page(itemType, itemName) {
     description: "Page",
     fields: () => ({
       totalCount: { type: GraphQLInt },
+      totalOwned: { type: GraphQLInt },
       edges: { type: new GraphQLList(Edge(itemType, itemName)) },
       pageInfo: { type: PageInfo }
     })
