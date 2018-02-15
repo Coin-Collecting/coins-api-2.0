@@ -2,7 +2,7 @@
 import { UserType } from "../types/user";
 
 // Queries
-import { User } from "../models";
+import { User, UserCoin, Coin, Wishes } from "../models";
 
 export const me = {
   type: UserType,
@@ -12,13 +12,38 @@ export const me = {
 
       let { username, email, admin } = userData.dataValues;
 
-      let collection = [{}];
+      let totalOwned = await UserCoin.count({
+        where: {
+          userId: context.user.id,
+        },
+      });
+
+      let totalCoins = await Coin.count();
+
+      let totalUniqueOwned = await UserCoin.aggregate(
+        'coinId', 'count', {
+        distinct: true,
+        where: {
+          userId: context.user.id,
+        },
+      });
+
+      let totalMissing = totalCoins - totalUniqueOwned;
+
+      let wishes = await Wishes.findAll({
+        where: {
+          userId: context.user.id,
+        }
+      });
 
       return {
         username,
         email,
         admin,
-        collection,
+        totalOwned,
+        totalUniqueOwned,
+        totalMissing,
+        wishes,
       }
     } else {
       return null;

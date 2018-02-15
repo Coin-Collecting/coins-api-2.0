@@ -15,6 +15,11 @@ import {
   removeUserCoin,
 } from '../mutations/user';
 
+import {
+  addWish,
+  removeWish,
+} from '../mutations/wishes';
+
 // QUERIES
 const QueryType = new GraphQLObjectType({
   name: 'Query',
@@ -35,6 +40,8 @@ const MutationType = new GraphQLObjectType({
     loginUser,
     addUserCoin,
     removeUserCoin,
+    addWish,
+    removeWish
   }),
 });
 

@@ -79,10 +79,22 @@ const UserCoin = connection.define("usercoins", {
   timestamps: false
 });
 
+const Wishes = connection.define("wishes", {
+  id: {
+    type: Sequelize.STRING,
+    primaryKey: true,
+  },
+  userId: Sequelize.STRING,
+  coinId: Sequelize.STRING,
+}, {
+  timestamps: false
+});
+
 export {
   Coin,
   Issue,
   Denomination,
   UserCoin,
   User,
+  Wishes,
 }

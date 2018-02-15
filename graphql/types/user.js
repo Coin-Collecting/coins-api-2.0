@@ -3,7 +3,12 @@ import {
   GraphQLObjectType,
   GraphQLString,
   GraphQLBoolean,
+  GraphQLInt,
+  GraphQLList,
 } from 'graphql';
+
+import { CoinType } from './coin';
+import { Coin } from "../models";
 
 // EDGE TYPE
 export const UserType = new GraphQLObjectType({
@@ -24,6 +29,38 @@ export const UserType = new GraphQLObjectType({
       type: GraphQLBoolean,
       description: '...',
       resolve: obj => obj.admin,
+    },
+    totalOwned: {
+      type: GraphQLInt,
+      description: '...',
+      resolve: obj => obj.totalOwned,
+    },
+    totalUniqueOwned: {
+      type: GraphQLInt,
+      description: '...',
+      resolve: obj => obj.totalUniqueOwned,
+    },
+    totalMissing: {
+      type: GraphQLInt,
+      description: '...',
+      resolve: obj => obj.totalMissing,
+    },
+    wishes: {
+      type: new GraphQLList(CoinType),
+      description: '...',
+      resolve: async ({ wishes }) => {
+        if (wishes.length === 0) return null;
+
+        let coinIds = [];
+        wishes.forEach(wish => coinIds.push(wish.coinId));
+
+        let coins = await Coin.findAll({
+          where: {
+            id: coinIds,
+          }
+        });
+        return coins;
+      }
     },
   }),
 });

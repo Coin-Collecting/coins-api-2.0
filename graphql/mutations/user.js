@@ -100,6 +100,7 @@ export const removeUserCoin = {
     UserCoin.destroy({
       where: {
         id,
+        userId: context.user.id,
       }
     });
 
