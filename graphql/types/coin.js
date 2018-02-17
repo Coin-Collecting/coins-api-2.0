@@ -8,7 +8,8 @@ import {
 
 import { IssueType } from '../types/issue';
 import { UserCoinType } from '../types/usercoin';
-import { Issue, UserCoin } from '../models';
+import { Issue, UserCoin, CoinImage } from '../models';
+import { CoinImageType } from './coin-image.js';
 
 // COIN TYPE
 export const CoinType = new GraphQLObjectType({
@@ -48,7 +49,8 @@ export const CoinType = new GraphQLObjectType({
     owned: {
       type: new GraphQLList(UserCoinType),
       description: '...',
-      resolve: async (obj, args, {user}) => {
+      resolve: async (obj, args, { user }) => {
+        if (!user) return null;
         let coins = await UserCoin.findAndCountAll({
           where: {
             coinId: obj.id,
@@ -57,6 +59,21 @@ export const CoinType = new GraphQLObjectType({
         });
 
         return coins.rows;
+      }
+    },
+    images: {
+      type: new GraphQLList(CoinImageType),
+      description: 'Coin Images',
+      resolve: async (obj, args, { user }) => {
+        if (!user) return null;
+        let images = await CoinImage.findAndCountAll({
+          where: {
+            userId: user.id,
+            coinId: obj.id,
+          }
+        });
+
+        return images.rows;
       }
     },
   })
