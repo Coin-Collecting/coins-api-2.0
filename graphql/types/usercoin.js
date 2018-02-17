@@ -2,10 +2,12 @@
 import {
   GraphQLObjectType,
   GraphQLString,
+  GraphQLList,
 } from 'graphql';
 
 import { CoinType } from './coin';
-import { Coin } from '../models';
+import { CoinImageType } from './coin-image.js';
+import { Coin, CoinImage } from '../models';
 
 // COIN TYPE
 export const UserCoinType = new GraphQLObjectType({
@@ -21,6 +23,20 @@ export const UserCoinType = new GraphQLObjectType({
       type: GraphQLString,
       description: 'Quality of a coin',
       resolve: obj => obj.quality,
+    },
+    images: {
+      type: new GraphQLList(CoinImageType),
+      description: 'Coin Images',
+      resolve: async (obj, args, context) => {
+        let images = await CoinImage.findAndCountAll({
+          where: {
+            userId: context.user.id,
+            coinId: obj.coinId,
+          }
+        });
+
+        return images.rows;
+      }
     },
     issueId: {
       type: GraphQLString,

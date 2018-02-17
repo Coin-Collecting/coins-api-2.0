@@ -90,6 +90,18 @@ const Wishes = connection.define("wishes", {
   timestamps: false
 });
 
+const CoinImage = connection.define("coinimages", {
+  id: {
+    type: Sequelize.STRING,
+    primaryKey: true,
+  },
+  userId: Sequelize.STRING,
+  coinId: Sequelize.STRING,
+  imageUrl: Sequelize.STRING,
+}, {
+  timestamps: false
+});
+
 export {
   Coin,
   Issue,
@@ -97,4 +109,5 @@ export {
   UserCoin,
   User,
   Wishes,
+  CoinImage,
 }

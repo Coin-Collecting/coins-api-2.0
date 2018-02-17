@@ -56,7 +56,6 @@ export const CoinType = new GraphQLObjectType({
           }
         });
 
-        console.log({coins});
         return coins.rows;
       }
     },
